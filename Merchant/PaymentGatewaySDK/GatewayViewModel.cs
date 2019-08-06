@@ -29,6 +29,8 @@ namespace Merchant.PaymentGatewaySDK
     public class GatewayTransactionDetailsViewModel
     {
         public bool IsSuccess { get; set; }
+        public int ExceptionCode { get; set; }
+        public string ExceptionMessage { get; set; }
         public string ExceptionDetails { get; set; }
         public DateTime TransactionDate { get; set; }
 
