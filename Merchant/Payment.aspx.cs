@@ -1,5 +1,7 @@
 ﻿using Merchant.Model;
+using PaymentGatewaySDK;
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 
@@ -7,21 +9,46 @@ namespace Merchant
 {
     public partial class Payment : System.Web.UI.Page
     {
-        private PaymentViewModel payment;
+        protected PaymentViewModel shopperDetails;
+        protected bool IsConfigurationValid;
+        protected string merchantId;
+        protected string privateKey;
+        protected string publicKey;
+
+        public Payment()
+        {
+            IsConfigurationValid = ReadConfiguration();
+        }
+
+        protected bool ReadConfiguration()
+        {
+            bool result = true;
+
+            merchantId = ConfigurationManager.AppSettings["Merchant:Id"].ToString();
+            privateKey = ConfigurationManager.AppSettings["Merchant:PrivateKey"].ToString();
+            publicKey = ConfigurationManager.AppSettings["Merchant:PublicKey"].ToString();
+
+            if (string.IsNullOrWhiteSpace(merchantId) || string.IsNullOrWhiteSpace(privateKey) || string.IsNullOrWhiteSpace(publicKey))
+                return false;
+
+            return result;
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            pnl_fail.Visible = false;
-            pnl_sucess.Visible = false;
-
             try
             {
-                decimal y = 12m;
+                pnl_fail.Visible = false;
+                pnl_sucess.Visible = false;
+
+                if (!IsConfigurationValid)
+                    throw new Exception("Application Error: Invalid configuration");
+
                 if (IsPostBack)
                 {
                     if (IsModelValid())
                     {
-                        payment = new PaymentViewModel()
+                        shopperDetails = new PaymentViewModel()
                         {
                             Amount = GetAmount(txt_amount.Text.Trim()),
                             CardNumber = Convert.ToInt32(txt_card_number.Text.Trim()),
@@ -29,8 +56,27 @@ namespace Merchant
                             ExpiryYear = Convert.ToInt32(txt_expiry_year.Text.Trim())
                         };
 
-                        //http request here
-                        //emcryption of value
+                        Gateway transaction = new Gateway()
+                        {
+                            MerchantId = merchantId,
+                            PrivateKey = privateKey,
+                            PublicKey = publicKey
+                        };
+
+
+                        var clientAuth = transaction.GetToken();
+                        if (!clientAuth.IsSuccess)
+                            throw new Exception(clientAuth.ExceptionDetails);
+
+                        transaction.ClientToken = clientAuth.Token;
+                        var result = transaction.CreateSale(shopperDetails);
+
+                        if (!result.Details.IsSuccess)
+                            throw new Exception(result.Details.ExceptionDetails);
+
+                        pnl_fail.Visible = false;
+                        pnl_sucess.Visible = true;
+                        lbl_success_message.Text = "Transaction successfull";
                     }
                 }
             }
@@ -51,7 +97,7 @@ namespace Merchant
             CultureInfo culture = new CultureInfo("en-US", true);
 
             //skip the currency symbol to take amount only
-            string[] temp = amount.Split(new string[] {culture.NumberFormat.CurrencySymbol }, StringSplitOptions.None);
+            string[] temp = amount.Split(new string[] { culture.NumberFormat.CurrencySymbol }, StringSplitOptions.None);
             if (temp.Length == 2)
                 decimal.TryParse(temp[1].Trim(), out result);
             else
@@ -89,7 +135,7 @@ namespace Merchant
             //validation for range, comapre with current date and format
             if (txt_expiry_month.Text.Trim().Length != 2 || !txt_expiry_month.Text.All(char.IsDigit))
                 throw new Exception("Invalid month format");
-            else 
+            else
             {
                 if (Convert.ToInt32(txt_expiry_month.Text.Trim()) < month)
                     throw new Exception("Invalid expiry month");
