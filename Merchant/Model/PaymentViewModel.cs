@@ -14,4 +14,6 @@ namespace Merchant.Model
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
     }
+
+    
 }
