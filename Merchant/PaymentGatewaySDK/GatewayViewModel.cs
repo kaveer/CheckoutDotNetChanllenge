@@ -9,6 +9,7 @@ namespace Merchant.PaymentGatewaySDK
     {
         public string TrnsactionId { get; set; }
         public GatewayTransactionDetailsViewModel Details { get; set; }
+        public GatewayPaymentViewModel Payment { get; set; }
     }
 
     public class GatewayPaymentViewModel
@@ -33,8 +34,6 @@ namespace Merchant.PaymentGatewaySDK
         public string ExceptionMessage { get; set; }
         public string ExceptionDetails { get; set; }
         public DateTime TransactionDate { get; set; }
-
-
     }
 
 
