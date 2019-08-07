@@ -16,8 +16,8 @@ namespace PaymentGateway
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "{controller}/{id}",
+                defaults: new { controller = "Doc", id = RouteParameter.Optional }
             );
         }
     }
