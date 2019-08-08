@@ -21,19 +21,6 @@ namespace PaymentGateway.Repository.Repository
             isConfigurationValid = ReadConfiguration();
         }
 
-        private bool ReadConfiguration()
-        {
-            bool result = true;
-
-            secretKey = ConfigurationManager.AppSettings["JWT:Key"]?.ToString();
-            expireMinuites = ConfigurationManager.AppSettings["JWT:Expire:Minuites"]?.ToString();
-
-            if (string.IsNullOrWhiteSpace(secretKey) || string.IsNullOrWhiteSpace(expireMinuites))
-                return false;
-
-            return result;
-        }
-
         public string GenerateToken(string merchantId)
         {
             string result = string.Empty;
@@ -55,6 +42,70 @@ namespace PaymentGateway.Repository.Repository
             CommonAction.Log(Constants.ApplicationLogType.Token_Create_Success.ToString(), string.Format("generate token for merchant Id: {0}", merchantId));
 
             return result;
+        }
+
+        public bool IsTokenValid(string token)
+        {
+            bool result = true;
+
+            if (string.IsNullOrWhiteSpace(token))
+                return false;
+
+            var tokenData = ExtractTokenData(token);
+
+            if (tokenData == null)
+                return false;
+
+            if (DateTime.UtcNow > tokenData.DateCreated.AddMinutes(5))
+                return false;
+
+            if (!ValidateMerchandId(tokenData))
+                return false;
+
+            return result;
+        }
+
+        private bool ValidateMerchandId(Token tokenData)
+        {
+            bool result = true;
+
+            using (PaymentGatewayEntities context = new PaymentGatewayEntities())
+            {
+                var data = context.Tokens?
+                                    .Where(x => x.ClientToken.Trim() == tokenData.ClientToken.Trim())
+                                    .FirstOrDefault();
+
+                if (string.IsNullOrWhiteSpace(data?.MerchantId))
+                    return false;
+
+                if (data.MerchantId != tokenData.MerchantId)
+                    return false;
+            }
+
+            return result;
+        }
+
+        private Token ExtractTokenData(string token)
+        {
+            Token result = new Token();
+
+
+            JwtSecurityTokenHandler hand = new JwtSecurityTokenHandler();
+            var serializeToken = hand.ReadJwtToken(token);
+
+            if (serializeToken == null)
+                return null;
+
+            result = new Token()
+            {
+                ClientToken = token,
+                DateCreated = serializeToken.ValidFrom,
+                MerchantId = serializeToken.Claims.SingleOrDefault(x => x.Type == "unique_name").Value
+            };
+
+
+            return result;
+
         }
 
         private void SaveToken(string token, string merchantId)
@@ -122,5 +173,19 @@ namespace PaymentGateway.Repository.Repository
 
             return result;
         }
+
+        private bool ReadConfiguration()
+        {
+            bool result = true;
+
+            secretKey = ConfigurationManager.AppSettings["JWT:Key"]?.ToString();
+            expireMinuites = ConfigurationManager.AppSettings["JWT:Expire:Minuites"]?.ToString();
+
+            if (string.IsNullOrWhiteSpace(secretKey) || string.IsNullOrWhiteSpace(expireMinuites))
+                return false;
+
+            return result;
+        }
+
     }
 }
