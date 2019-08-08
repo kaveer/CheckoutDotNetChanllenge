@@ -33,7 +33,7 @@ namespace PaymentGatewaySDK
             GatewayClientTokenViewModel result =  new GatewayClientTokenViewModel();
             try
             {
-                string routePrefix = "v1/auth";
+                string routePrefix = "api/auth";
                 string route = "token";
                 string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, MerchantId);
 
@@ -84,7 +84,7 @@ namespace PaymentGatewaySDK
             GatewayViewModel result = new GatewayViewModel();
             try
             {
-                string routePrefix = "v1/transaction";
+                string routePrefix = "api/transaction";
                 string route = "sale";
                 string endpoint = Path.Combine(baseAPIUrl, routePrefix, route);
 
