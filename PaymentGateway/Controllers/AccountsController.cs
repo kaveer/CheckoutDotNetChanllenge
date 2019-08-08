@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace PaymentGateway.Controllers
 {
@@ -20,6 +21,7 @@ namespace PaymentGateway.Controllers
 
         [Route("token")]
         [HttpGet]
+        [ResponseType(typeof(string))]
         public IHttpActionResult GenerateClientToken(string merchantId)
         {
             try
@@ -27,7 +29,10 @@ namespace PaymentGateway.Controllers
                 if (string.IsNullOrWhiteSpace(merchantId))
                     return BadRequest("Invalid merchant Id");
 
-                _repository.GenerateToken(merchantId);
+                string result = _repository.GenerateToken(merchantId);
+
+                if (string.IsNullOrWhiteSpace(result))
+                    return NotFound();
 
                 return Ok();
             }

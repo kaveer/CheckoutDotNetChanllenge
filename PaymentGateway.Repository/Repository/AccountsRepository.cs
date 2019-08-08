@@ -11,7 +11,12 @@ namespace PaymentGateway.Repository.Repository
     {
         public string GenerateToken(string merchantId)
         {
-            throw new NotImplementedException();
+            string result = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(merchantId))
+                return string.Empty;
+
+            return result;
         }
     }
 }
