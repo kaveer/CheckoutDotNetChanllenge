@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaymentGateway.Datalayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,7 @@ namespace PaymentGateway.Repository.Interface
     {
         string GenerateToken(string merchantId);
         bool IsTokenValid(string token);
+
+        Token ExtractTokenData(string token)
     }
 }

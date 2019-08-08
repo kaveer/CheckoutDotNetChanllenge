@@ -85,7 +85,7 @@ namespace PaymentGateway.Repository.Repository
             return result;
         }
 
-        private Token ExtractTokenData(string token)
+        public Token ExtractTokenData(string token)
         {
             Token result = new Token();
 
