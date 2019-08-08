@@ -72,7 +72,7 @@ namespace Merchant
                         var result = transaction.CreateSale(shopperDetails);
 
                         if (!result.Details.IsSuccess)
-                            throw new Exception(result.Details.ExceptionDetails);
+                            throw new Exception(result.Details.MessageDetails);
 
                         pnl_fail.Visible = false;
                         pnl_sucess.Visible = true;

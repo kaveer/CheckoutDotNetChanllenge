@@ -131,7 +131,7 @@ namespace PaymentGatewaySDK
                     {
                         IsSuccess = false,
                         Code = 400,
-                        Details = ex.Message,
+                        MessageDetails = ex.Message,
                         TransactionDate = DateTime.Now,
                         Message = string.Empty
                     },
