@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Repository",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Datalayer", "PaymentGateway.Datalayer\PaymentGateway.Datalayer.csproj", "{DB1CE0B3-606F-40BD-9378-37D71409F476}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Repository", "Bank.Repository\Bank.Repository.csproj", "{50DE8D30-A9F6-4919-B9EA-211DC876405B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Datalayer", "Bank.Datalayer\Bank.Datalayer.csproj", "{E619C367-B069-4F24-8EBA-3BF029A5E313}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{DB1CE0B3-606F-40BD-9378-37D71409F476}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1CE0B3-606F-40BD-9378-37D71409F476}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1CE0B3-606F-40BD-9378-37D71409F476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50DE8D30-A9F6-4919-B9EA-211DC876405B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50DE8D30-A9F6-4919-B9EA-211DC876405B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50DE8D30-A9F6-4919-B9EA-211DC876405B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50DE8D30-A9F6-4919-B9EA-211DC876405B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E619C367-B069-4F24-8EBA-3BF029A5E313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E619C367-B069-4F24-8EBA-3BF029A5E313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E619C367-B069-4F24-8EBA-3BF029A5E313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E619C367-B069-4F24-8EBA-3BF029A5E313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +96,8 @@ Global
 		{0E68A49E-194E-4736-90AB-2464F9D3FD8D} = {4E138738-5EA2-459A-AE12-48D40D080D42}
 		{0DA1431C-064F-4997-B84F-6B018A3D22E3} = {0E68A49E-194E-4736-90AB-2464F9D3FD8D}
 		{DB1CE0B3-606F-40BD-9378-37D71409F476} = {0E68A49E-194E-4736-90AB-2464F9D3FD8D}
+		{50DE8D30-A9F6-4919-B9EA-211DC876405B} = {16537008-D909-4A72-845B-9400A3E89A69}
+		{E619C367-B069-4F24-8EBA-3BF029A5E313} = {16537008-D909-4A72-845B-9400A3E89A69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3FE8F58F-D979-489E-B093-E039219863A8}
