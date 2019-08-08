@@ -12,6 +12,8 @@ namespace PaymentGateway.Controllers
     [RoutePrefix("api/auth")]
     public class AccountsController : ApiController
     {
+        //using unity for dependency injection
+        //Install-Package Unity.AspNet.WebApi -Version 5.11.1
         private readonly IAccountsRepository _repository;
 
         public AccountsController(IAccountsRepository repository)
