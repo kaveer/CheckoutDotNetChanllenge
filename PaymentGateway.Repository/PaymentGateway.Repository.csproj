@@ -69,8 +69,10 @@
     <Compile Include="Helper\CommonAction.cs" />
     <Compile Include="Helper\Constants.cs" />
     <Compile Include="Interface\IAccountsRepository.cs" />
+    <Compile Include="Interface\ITransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AccountsRepository.cs" />
+    <Compile Include="Repository\TransactionRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
