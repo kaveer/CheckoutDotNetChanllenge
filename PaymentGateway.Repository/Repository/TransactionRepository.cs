@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using PaymentGateway.Datalayer;
@@ -15,6 +19,8 @@ namespace PaymentGateway.Repository.Repository
     {
         public string MerchantId { get; set; }
 
+        protected readonly string baseAPIUrl = "http://localhost:64624";
+
         public PaymentResponseViewModel PerformSale(OuterMapPaymentViewModel item)
         {
             PaymentResponseViewModel result = new PaymentResponseViewModel();
@@ -23,15 +29,49 @@ namespace PaymentGateway.Repository.Repository
             if (decryptedData.CardNumber == 0 || decryptedData.Amount == 0)
                 return null;
 
-            result = AcquiringBankRequest(item);
+            result = AcquiringBankRequest(decryptedData);
+            ///save fail or success in transaction table
 
             return result;
         }
 
-        /// Since the requirement of this challenge is to Simulating the bank and due to time constraint thus i am not performing encryption of response between payment gateway and bank
-        private PaymentResponseViewModel AcquiringBankRequest(OuterMapPaymentViewModel item)
+        /// Since the requirement of this challenge is to Simulating the bank and due to time constraint 
+        /// thus i am not performing encryption of response between payment gateway and bank
+        private PaymentResponseViewModel AcquiringBankRequest(PaymentViewModel item)
         {
-            throw new NotImplementedException();
+            PaymentResponseViewModel result = new PaymentResponseViewModel();
+
+            string routePrefix = "api/bank";
+            string route = "sales";
+            string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, "?merchantId=", MerchantId);
+
+            if (!string.IsNullOrWhiteSpace(endpoint))
+            {
+                string jsonObject = JsonConvert.SerializeObject(item, Formatting.None);
+                var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+
+                var httpClient = new HttpClient();
+
+                var response = httpClient.PostAsync(endpoint, content).Result;
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    var responseObject = JsonConvert.DeserializeObject<PaymentResponseViewModel>(responseContent);
+                    if (responseObject != null)
+                    {
+                        result = responseObject;
+                    }
+                }
+                else
+                {
+                    ///TODO: change exception to payment response view mode
+                    ///issuceess = false
+
+                    throw new Exception("Fail to create transaction");
+                }
+            }
+
+            return result;
         }
 
         private PaymentViewModel DecryptedData(OuterMapPaymentViewModel item)

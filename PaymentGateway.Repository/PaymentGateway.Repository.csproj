@@ -73,6 +73,7 @@
     <Compile Include="Interface\IAccountsRepository.cs" />
     <Compile Include="Interface\ITransactionRepository.cs" />
     <Compile Include="Model\PaymentViewModel.cs" />
+    <Compile Include="Model\TransactionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AccountsRepository.cs" />
     <Compile Include="Repository\TransactionRepository.cs" />
