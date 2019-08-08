@@ -9,5 +9,6 @@ namespace PaymentGateway.Repository.Interface
     public interface IAccountsRepository
     {
         string GenerateToken(string merchantId);
+        bool IsTokenValid(string token);
     }
 }
