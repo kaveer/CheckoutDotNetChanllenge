@@ -45,6 +45,7 @@ namespace PaymentGateway
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IAccountsRepository, AccountsRepository>();
+            container.RegisterType<ITransactionRepository, TransactionRepository>();
         }
     }
 }
