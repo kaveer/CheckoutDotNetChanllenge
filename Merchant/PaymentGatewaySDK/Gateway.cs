@@ -20,7 +20,7 @@ namespace PaymentGatewaySDK
         public string PrivateKey { get; set; }
         public string ClientToken { get; set; }
 
-        protected readonly string baseAPIUrl = "";
+        protected readonly string baseAPIUrl = "http://localhost:64591";
 
 
         public Gateway()
@@ -35,7 +35,7 @@ namespace PaymentGatewaySDK
             {
                 string routePrefix = "api/auth";
                 string route = "token";
-                string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, MerchantId);
+                string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, "?merchantId=", MerchantId);
 
                 if (!string.IsNullOrWhiteSpace(MerchantId) || !string.IsNullOrWhiteSpace(endpoint))
                 {
