@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace PaymentGateway.Controllers
 {
@@ -23,8 +24,9 @@ namespace PaymentGateway.Controllers
             _accountRepository = accountRepository;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("sales")]
+        [ResponseType(typeof(PaymentResponseViewModel))]
         public IHttpActionResult Sales(OuterMapPaymentViewModel item)
         {
             try
@@ -49,6 +51,21 @@ namespace PaymentGateway.Controllers
 
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("retrieve")]
+        [ResponseType(typeof(TransactionViewModel))]
+        public IHttpActionResult GetByMerchantId(string merchantId)
+        {
+            try
+            {
+                return Ok();
             }
             catch (Exception ex)
             {
