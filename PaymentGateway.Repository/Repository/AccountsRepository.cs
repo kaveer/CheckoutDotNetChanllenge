@@ -1,4 +1,5 @@
-﻿using PaymentGateway.Repository.Interface;
+﻿using PaymentGateway.Datalayer;
+using PaymentGateway.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace PaymentGateway.Repository.Repository
 
             if (string.IsNullOrWhiteSpace(merchantId))
                 return string.Empty;
+
+            using (PaymentGatewayEntities context = new PaymentGatewayEntities())
+            {
+                var data = context.Merchants.ToList();
+                var d = context.MerchantKeys.Where(m->m.);
+            }
 
             return result;
         }
