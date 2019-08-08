@@ -1,4 +1,5 @@
-﻿using PaymentGateway.Repository.Interface;
+﻿using PaymentGateway.Repository.Helper;
+using PaymentGateway.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +37,11 @@ namespace PaymentGateway.Controllers
                 if (string.IsNullOrWhiteSpace(result))
                     return NotFound();
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
+                CommonAction.Log(Constants.ApplicationLogType.Application_Error.ToString(), ex.Message);
                 return InternalServerError(ex);
             }
         }
