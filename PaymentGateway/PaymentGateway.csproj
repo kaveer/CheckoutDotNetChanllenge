@@ -108,7 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
@@ -136,6 +138,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PaymentGateway.Datalayer\PaymentGateway.Datalayer.csproj">
+      <Project>{DB1CE0B3-606F-40BD-9378-37D71409F476}</Project>
+      <Name>PaymentGateway.Datalayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PaymentGateway.Repository\PaymentGateway.Repository.csproj">
       <Project>{0da1431c-064f-4997-b84f-6b018a3d22e3}</Project>
       <Name>PaymentGateway.Repository</Name>

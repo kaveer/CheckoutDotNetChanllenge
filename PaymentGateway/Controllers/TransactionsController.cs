@@ -1,5 +1,6 @@
 ﻿using PaymentGateway.Repository.Helper;
 using PaymentGateway.Repository.Interface;
+using PaymentGateway.Repository.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace PaymentGateway.Controllers
 
         [HttpGet]
         [Route("sales")]
-        public IHttpActionResult Sales()
+        public IHttpActionResult Sales(OuterMapPaymentViewModel item)
         {
             try
             {
@@ -36,12 +37,18 @@ namespace PaymentGateway.Controllers
                     CommonAction.Log(Constants.ApplicationLogType.Transaction_Sales_Token_Invalid.ToString(), "Invalid or expired token");
                     return BadRequest("Invalid token");
                 }
+                _repository.MerchantId = _accountRepository.ExtractTokenData(token).MerchantId;
+
+                if (string.IsNullOrWhiteSpace(item?.Amount) || string.IsNullOrWhiteSpace(item?.CardNumber))
+                {
+                    CommonAction.Log(Constants.ApplicationLogType.Transaction_Sale_Card_invalid.ToString(), "Invalid Card details");
+                    return BadRequest("Invalid card details");
+                }
+
+                PaymentResponseViewModel result = _repository.PerformSale(item);
 
 
-
-
-
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
