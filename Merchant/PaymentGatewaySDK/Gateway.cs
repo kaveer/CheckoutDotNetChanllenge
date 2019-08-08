@@ -46,15 +46,15 @@ namespace PaymentGatewaySDK
                     {
                        
                         var responseContent = response.Content.ReadAsStringAsync().Result;
-                        var responseObject = JsonConvert.DeserializeObject<GatewayClientTokenViewModel>(responseContent);
+                        var responseObject = JsonConvert.DeserializeObject<string>(responseContent);
 
                         if (responseObject != null)
                         {
                             result = new GatewayClientTokenViewModel()
                             {
-                                Token = responseObject.Token,
-                                IsSuccess = responseObject.IsSuccess,
-                                ExceptionDetails = responseObject.ExceptionDetails
+                                Token = responseObject,
+                                IsSuccess = true,
+                                ExceptionDetails = "Transaction successfull"
                             };
                         }
                     }
@@ -124,15 +124,16 @@ namespace PaymentGatewaySDK
             }
             catch (Exception ex)
             {
+                //TODO: complete implementation
                 result = new GatewayViewModel()
                 {
                     Details = new GatewayTransactionDetailsViewModel()
                     {
                         IsSuccess = false,
-                        ExceptionCode = 400,
-                        ExceptionDetails = ex.Message,
+                        Code = 400,
+                        Details = ex.Message,
                         TransactionDate = DateTime.Now,
-                        ExceptionMessage = string.Empty
+                        Message = string.Empty
                     },
                     Payment = new GatewayPaymentViewModel()
                     {
