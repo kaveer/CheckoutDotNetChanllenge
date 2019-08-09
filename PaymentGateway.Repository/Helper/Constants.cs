@@ -15,7 +15,9 @@ namespace PaymentGateway.Repository.Helper
             Application_Error = 3,
             Transaction_Sales_Token_Invalid = 4,
             Transaction_Sale_Card_invalid = 5,
-            Transaction_Sales_Card_Decrypt_Fail = 6
+            Transaction_Sales_Card_Decrypt_Fail = 6,
+            Transaction_Sales_Bank_Response_Fail = 7,
+            Transaction_Sales_Bank_Response_Success = 8
         }
     }
 }

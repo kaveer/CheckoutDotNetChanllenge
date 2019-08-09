@@ -24,13 +24,19 @@ namespace PaymentGateway.Repository.Repository
         public PaymentResponseViewModel PerformSale(OuterMapPaymentViewModel item)
         {
             PaymentResponseViewModel result = new PaymentResponseViewModel();
+            string applicationLogType;
 
             PaymentViewModel decryptedData = DecryptedData(item);
             if (decryptedData.CardNumber == 0 || decryptedData.Amount == 0)
                 return null;
 
             result = AcquiringBankRequest(decryptedData);
-            ///save fail or success in transaction table
+            if (result.Details.IsSuccess)
+                applicationLogType = Constants.ApplicationLogType.Transaction_Sales_Bank_Response_Success.ToString();
+            else
+                applicationLogType = Constants.ApplicationLogType.Transaction_Sales_Bank_Response_Fail.ToString();
+
+            CommonAction.Log(applicationLogType, result?.Details?.Message);
 
             return result;
         }
@@ -43,11 +49,19 @@ namespace PaymentGateway.Repository.Repository
 
             string routePrefix = "api/bank";
             string route = "sales";
-            string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, "?merchantId=", MerchantId);
+            string endpoint = Path.Combine(baseAPIUrl, routePrefix, route);
 
             if (!string.IsNullOrWhiteSpace(endpoint))
             {
-                string jsonObject = JsonConvert.SerializeObject(item, Formatting.None);
+                PaymentResponseViewModel jasonModel = new PaymentResponseViewModel()
+                {
+                    TransactionId = "0",
+                    Details = new GatewayTransactionDetailsViewModel(),
+                    Merchant = GetMerchantDetails(),
+                    Payment = item
+                };
+
+                string jsonObject = JsonConvert.SerializeObject(jasonModel, Formatting.None);
                 var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
 
                 var httpClient = new HttpClient();
@@ -64,10 +78,44 @@ namespace PaymentGateway.Repository.Repository
                 }
                 else
                 {
-                    ///TODO: change exception to payment response view mode
-                    ///issuceess = false
+                    result = new PaymentResponseViewModel()
+                    {
+                        TransactionId = "0",
+                        Details = new GatewayTransactionDetailsViewModel()
+                        {
+                            IsSuccess = false,
+                            TransactionDate = DateTime.Now,
+                            Details = "Bank transaction fail",
+                            Code = 1503,
+                            Message = "Bank transaction fail"
+                        },
+                        Merchant = new GatewayMerchantViewModel(),
+                        Payment = new PaymentViewModel()
+                    };
+                }
+            }
 
-                    throw new Exception("Fail to create transaction");
+            return result;
+        }
+
+        private GatewayMerchantViewModel GetMerchantDetails()
+        {
+            GatewayMerchantViewModel result = new GatewayMerchantViewModel();
+
+            using (PaymentGatewayEntities context = new PaymentGatewayEntities())
+            {
+                var merchantData = context.MerchantDetails?
+                                    .Where(x => x.MerchantId.Trim() == MerchantId.Trim())
+                                    .FirstOrDefault();
+
+                if (merchantData != null)
+                {
+                    result = new GatewayMerchantViewModel()
+                    {
+                        CardNumber = long.Parse(merchantData.CardNumber),
+                        ExpiryMonth = merchantData.ExpiryMonth,
+                        ExpiryYear = merchantData.ExpiryYear
+                    };
                 }
             }
 
@@ -95,7 +143,7 @@ namespace PaymentGateway.Repository.Repository
                         result = new PaymentViewModel()
                         {
                             Amount = Convert.ToDecimal(Decrypt(keys.PrivateKey, item.Amount)),
-                            CardNumber = Convert.ToInt32(Decrypt(keys.PrivateKey, item.CardNumber)),
+                            CardNumber = long.Parse(Decrypt(keys.PrivateKey, item.CardNumber)),
                             ExpiryMonth = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryMonth)),
                             ExpiryYear = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryYear))
                         };
