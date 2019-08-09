@@ -29,5 +29,6 @@ namespace PaymentGateway.Datalayer
         public virtual DbSet<MerchantKey> MerchantKeys { get; set; }
         public virtual DbSet<ApplicationLog> ApplicationLogs { get; set; }
         public virtual DbSet<Token> Tokens { get; set; }
+        public virtual DbSet<MerchantDetail> MerchantDetails { get; set; }
     }
 }

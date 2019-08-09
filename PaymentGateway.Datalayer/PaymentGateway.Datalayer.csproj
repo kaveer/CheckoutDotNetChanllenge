@@ -57,6 +57,9 @@
     <Compile Include="Merchant.cs">
       <DependentUpon>PaymentGatewayDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MerchantDetail.cs">
+      <DependentUpon>PaymentGatewayDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="MerchantKey.cs">
       <DependentUpon>PaymentGatewayDataModel.tt</DependentUpon>
     </Compile>
