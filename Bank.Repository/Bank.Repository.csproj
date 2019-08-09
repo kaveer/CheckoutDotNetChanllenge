@@ -58,5 +58,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bank.Datalayer\Bank.Datalayer.csproj">
+      <Project>{E619C367-B069-4F24-8EBA-3BF029A5E313}</Project>
+      <Name>Bank.Datalayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
