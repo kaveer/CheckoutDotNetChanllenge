@@ -20,10 +20,12 @@ namespace Bank.Repository.Model
 
     public class GatewayPaymentViewModel
     {
-        public string CardNumber { get; set; }
-        public string Amount { get; set; }
-        public string ExpiryMonth { get; set; }
-        public string ExpiryYear { get; set; }
+        public long CardNumber { get; set; }
+        //for amount better use decimal accounding to my experience and link: http://net-informations.com/q/faq/float.html
+        //for performance use doucle but if dealing with money use decimal link: https://exceptionnotfound.net/decimal-vs-double-and-other-tips-about-number-types-in-net/
+        public decimal Amount { get; set; }
+        public int ExpiryMonth { get; set; }
+        public int ExpiryYear { get; set; }
     }
 
     public class GatewayTransactionDetailsViewModel
@@ -35,11 +37,19 @@ namespace Bank.Repository.Model
         public DateTime TransactionDate { get; set; }
     }
 
-    public class GatewayMerchantViewModel
+    public class GatewayMerchantViewModel: GatewayMerchantDetailsViewModel
     {
         public int MerchantId { get; set; }
         public decimal AmountCredited { get; set; }
         public DateTime DateCredited { get; set; }
+    }
+
+    public class GatewayMerchantDetailsViewModel
+    {
+        public long CardNumber { get; set; }
+        public int ExpiryMonth { get; set; }
+        public int ExpiryYear { get; set; }
         public decimal TotalAmount { get; set; }
+
     }
 }
