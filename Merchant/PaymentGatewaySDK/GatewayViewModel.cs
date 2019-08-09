@@ -5,6 +5,14 @@ using System.Web;
 
 namespace Merchant.PaymentGatewaySDK
 {
+    public class GatewayPaymentViewModel
+    {
+        public string CardNumber { get; set; }
+        public string Amount { get; set; }
+        public string ExpiryMonth { get; set; }
+        public string ExpiryYear { get; set; }
+    }
+
     public class GatewayViewModel
     {
         public string TransactionId { get; set; }
@@ -12,14 +20,6 @@ namespace Merchant.PaymentGatewaySDK
         public GatewayPaymentViewModel Payment { get; set; }
         public GatewayMerchantViewModel Merchant { get; set; }
 
-    }
-
-    public class GatewayPaymentViewModel
-    {
-        public string CardNumber { get; set; }
-        public string Amount { get; set; }
-        public string ExpiryMonth { get; set; }
-        public string ExpiryYear { get; set; }
     }
 
     public class GatewayClientTokenViewModel
@@ -38,12 +38,20 @@ namespace Merchant.PaymentGatewaySDK
         public DateTime TransactionDate { get; set; }
     }
 
-    public class GatewayMerchantViewModel
+    public class GatewayMerchantViewModel: GatewayMerchantDetailsViewModel
     {
         public int MerchantId { get; set; }
         public decimal AmountCredited { get; set; }
         public DateTime DateCredited { get; set; }
+    }
+
+    public class GatewayMerchantDetailsViewModel
+    {
+        public int CardNumber { get; set; }
+        public int ExpiryMonth { get; set; }
+        public int ExpiryYear { get; set; }
         public decimal TotalAmount { get; set; }
+
     }
 
 
