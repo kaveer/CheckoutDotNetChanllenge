@@ -1,3 +1,5 @@
+using Bank.Repository.Interface;
+using Bank.Repository.Repository;
 using System;
 
 using Unity;
@@ -42,6 +44,7 @@ namespace Bank
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<ITransactionRepository, TransactionRepository>();
         }
     }
 }
