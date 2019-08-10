@@ -51,7 +51,7 @@ namespace Merchant
                 pnl_sucess.Visible = false;
 
                 lbl_fail_message.Text = ex.Message;
-                //implement log here
+                Log("Transaction_Fail", ex.Message);
             }
         }
 
@@ -184,13 +184,29 @@ namespace Merchant
                 pnl_sucess.Visible = false;
 
                 lbl_fail_message.Text = ex.Message;
-                //implement log here
+                Log("Transaction_Fail", ex.Message);
             }
         }
 
         protected void btn_transaction_Click(object sender, EventArgs e)
         {
             Response.Redirect("Transactions");
+        }
+
+        public void Log(string type, string details)
+        {
+            using (MerchantEntities context = new MerchantEntities())
+            {
+                ApplicationLog data = new ApplicationLog()
+                {
+                    LogType = type,
+                    Details = details,
+                    DateCreated = DateTime.Now
+                };
+
+                context.ApplicationLogs.Add(data);
+                context.SaveChanges();
+            }
         }
     }
 }
