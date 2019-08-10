@@ -36,6 +36,7 @@ namespace PaymentGateway.Repository.Repository
             else
                 applicationLogType = Constants.ApplicationLogType.Transaction_Sales_Bank_Response_Fail.ToString();
 
+            //save transaction here
             CommonAction.Log(applicationLogType, result?.Details?.Message);
 
             return result;
@@ -72,28 +73,36 @@ namespace PaymentGateway.Repository.Repository
                     var responseContent = response.Content.ReadAsStringAsync().Result;
                     var responseObject = JsonConvert.DeserializeObject<PaymentResponseViewModel>(responseContent);
                     if (responseObject != null)
-                    {
                         result = responseObject;
-                    }
+                    else
+                        result = InvalidTransaction("Fail to retrieve data from bank");
                 }
                 else
-                {
-                    result = new PaymentResponseViewModel()
-                    {
-                        TransactionId = "0",
-                        Details = new GatewayTransactionDetailsViewModel()
-                        {
-                            IsSuccess = false,
-                            TransactionDate = DateTime.Now,
-                            Details = "Bank transaction fail",
-                            Code = 1503,
-                            Message = "Bank transaction fail"
-                        },
-                        Merchant = new GatewayMerchantViewModel(),
-                        Payment = new PaymentViewModel()
-                    };
-                }
+                    result = InvalidTransaction("Bank transaction fail");
             }
+
+            return result;
+        }
+
+        private PaymentResponseViewModel InvalidTransaction(string message, string details = "")
+        {
+            if (string.IsNullOrWhiteSpace(details))
+                details = message;
+
+            PaymentResponseViewModel result = new PaymentResponseViewModel()
+            {
+                TransactionId = "0",
+                Details = new GatewayTransactionDetailsViewModel()
+                {
+                    IsSuccess = false,
+                    TransactionDate = DateTime.Now,
+                    Details = details,
+                    Code = 1503,
+                    Message = message
+                },
+                Merchant = new GatewayMerchantViewModel(),
+                Payment = new PaymentViewModel()
+            };
 
             return result;
         }
@@ -156,7 +165,7 @@ namespace PaymentGateway.Repository.Repository
                 result.Amount = 0;
                 result.CardNumber = 0;
             }
-           
+
 
             return result;
         }
