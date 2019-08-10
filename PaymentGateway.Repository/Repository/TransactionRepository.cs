@@ -36,10 +36,29 @@ namespace PaymentGateway.Repository.Repository
             else
                 applicationLogType = Constants.ApplicationLogType.Transaction_Sales_Bank_Response_Fail.ToString();
 
-            //save transaction here
+            SaveTransaction(result);
             CommonAction.Log(applicationLogType, result?.Details?.Message);
 
             return result;
+        }
+
+        private void SaveTransaction(PaymentResponseViewModel result)
+        {
+            using (PaymentGatewayEntities contect = new PaymentGatewayEntities())
+            {
+                TransactionLog transaction = new TransactionLog()
+                {
+                    AmountCredited = result.Payment.Amount,
+                    BankResponse = result.Details.Message,
+                    IsSuccess = result.Details.IsSuccess,
+                    TransactionDate = DateTime.Now,
+                    MerchantId = MerchantId,
+                    TransactionIdentifiyer = result.TransactionId
+                };
+
+                contect.TransactionLogs.Add(transaction);
+                contect.SaveChanges();
+            }
         }
 
         /// Since the requirement of this challenge is to Simulating the bank and due to time constraint 
