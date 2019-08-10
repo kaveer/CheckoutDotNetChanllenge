@@ -82,6 +82,9 @@
     <Compile Include="Token.cs">
       <DependentUpon>PaymentGatewayDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TransactionLog.cs">
+      <DependentUpon>PaymentGatewayDataModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -50,12 +50,25 @@
           <Property Name="ClientToken" Type="varchar(max)" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="TransactionLog">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransactionIdentifiyer" Type="varchar" MaxLength="100" />
+          <Property Name="MerchantId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsSuccess" Type="bit" />
+          <Property Name="AmountCredited" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="BankResponse" Type="varchar" MaxLength="500" />
+          <Property Name="TransactionDate" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="PaymentGatewayModelStoreContainer">
           <EntitySet Name="ApplicationLog" EntityType="Self.ApplicationLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Merchant" EntityType="Self.Merchant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MerchantDetails" EntityType="Self.MerchantDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MerchantKey" EntityType="Self.MerchantKey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Token" EntityType="Self.Token" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionLog" EntityType="Self.TransactionLog" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -74,6 +87,7 @@
           <EntitySet Name="ApplicationLogs" EntityType="PaymentGatewayModel.ApplicationLog" />
           <EntitySet Name="Tokens" EntityType="PaymentGatewayModel.Token" />
           <EntitySet Name="MerchantDetails" EntityType="PaymentGatewayModel.MerchantDetail" />
+          <EntitySet Name="TransactionLogs" EntityType="PaymentGatewayModel.TransactionLog" />
         </EntityContainer>
         <EntityType Name="MerchantKey">
           <Key>
@@ -112,6 +126,18 @@
           <Property Name="ExpiryMonth" Type="Int32" Nullable="false" />
           <Property Name="ExpiryYear" Type="Int32" Nullable="false" />
           <Property Name="TotalAmount" Type="Decimal" Precision="9" Scale="2" />
+        </EntityType>
+        <EntityType Name="TransactionLog">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionIdentifiyer" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MerchantId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsSuccess" Type="Boolean" />
+          <Property Name="AmountCredited" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="BankResponse" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -166,6 +192,19 @@
                 <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
                 <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
                 <ScalarProperty Name="DetailsId" ColumnName="DetailsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionLogs">
+            <EntityTypeMapping TypeName="PaymentGatewayModel.TransactionLog">
+              <MappingFragment StoreEntitySet="TransactionLog">
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="BankResponse" ColumnName="BankResponse" />
+                <ScalarProperty Name="AmountCredited" ColumnName="AmountCredited" />
+                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="TransactionIdentifiyer" ColumnName="TransactionIdentifiyer" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
