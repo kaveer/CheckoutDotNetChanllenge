@@ -43,42 +43,7 @@ namespace Merchant
 
                 if (!IsConfigurationValid)
                     throw new Exception("Application Error: Invalid configuration");
-
-                if (IsPostBack)
-                {
-                    if (IsModelValid())
-                    {
-                        shopperDetails = new PaymentViewModel()
-                        {
-                            Amount = GetAmount(txt_amount.Text.Trim()),
-                            CardNumber = Convert.ToInt32(txt_card_number.Text.Trim()),
-                            ExpiryMonth = Convert.ToInt32(txt_expiry_month.Text.Trim()),
-                            ExpiryYear = Convert.ToInt32(txt_expiry_year.Text.Trim())
-                        };
-
-                        Gateway transaction = new Gateway()
-                        {
-                            MerchantId = merchantId,
-                            PrivateKey = privateKey,
-                            PublicKey = publicKey
-                        };
-
-
-                        var clientAuth = transaction.GetToken();
-                        if (!clientAuth.IsSuccess)
-                            throw new Exception(clientAuth.ExceptionDetails);
-
-                        transaction.ClientToken = clientAuth.Token;
-                        var result = transaction.CreateSale(shopperDetails);
-
-                        if (!result.Details.IsSuccess)
-                            throw new Exception(result.Details.MessageDetails);
-
-                        pnl_fail.Visible = false;
-                        pnl_sucess.Visible = true;
-                        lbl_success_message.Text = "Transaction successfull";
-                    }
-                }
+               
             }
             catch (Exception ex)
             {
@@ -171,6 +136,61 @@ namespace Merchant
                 throw new Exception("year cannot be empty");
 
             return result;
+        }
+
+        protected void btn_submit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsPostBack)
+                {
+                    if (IsModelValid())
+                    {
+                        shopperDetails = new PaymentViewModel()
+                        {
+                            Amount = GetAmount(txt_amount.Text.Trim()),
+                            CardNumber = Convert.ToInt32(txt_card_number.Text.Trim()),
+                            ExpiryMonth = Convert.ToInt32(txt_expiry_month.Text.Trim()),
+                            ExpiryYear = Convert.ToInt32(txt_expiry_year.Text.Trim())
+                        };
+
+                        Gateway transaction = new Gateway()
+                        {
+                            MerchantId = merchantId,
+                            PrivateKey = privateKey,
+                            PublicKey = publicKey
+                        };
+
+
+                        var clientAuth = transaction.GetToken();
+                        if (!clientAuth.IsSuccess)
+                            throw new Exception(clientAuth.ExceptionDetails);
+
+                        transaction.ClientToken = clientAuth.Token;
+                        var result = transaction.CreateSale(shopperDetails);
+
+                        if (!result.Details.IsSuccess)
+                            throw new Exception(result.Details.MessageDetails);
+
+                        pnl_fail.Visible = false;
+                        pnl_sucess.Visible = true;
+                        lbl_success_message.Text = "Transaction successfull";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pnl_fail.Visible = true;
+                pnl_sucess.Visible = false;
+
+                lbl_fail_message.Text = ex.Message;
+                //implement log here
+            }
+        }
+
+        protected void btn_transaction_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Transactions");
         }
     }
 }

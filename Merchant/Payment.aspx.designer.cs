@@ -85,6 +85,15 @@ namespace Merchant {
         protected global::System.Web.UI.WebControls.Button btn_submit;
         
         /// <summary>
+        /// btn_transaction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_transaction;
+        
+        /// <summary>
         /// pnl_sucess control.
         /// </summary>
         /// <remarks>

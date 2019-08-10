@@ -54,7 +54,9 @@
 
                         <div class='form-row'>
                             <div class='col-md-12 form-group'>
-                                <asp:Button ID="btn_submit" CssClass="form-control btn btn-primary submit-button" runat="server" Text="Pay" />
+                                <asp:Button ID="btn_submit" CssClass="form-control btn btn-primary submit-button" runat="server" Text="Pay" OnClick="btn_submit_Click" />
+                                </br>
+                                <asp:Button ID="btn_transaction" CssClass="form-control btn btn-primary submit-button" runat="server" Text="View Transaction" OnClick="btn_transaction_Click"/>
                             </div>
                         </div>
 
@@ -64,6 +66,7 @@
                                     <div class='alert-success alert'>
                                         Message:
                                         <asp:Label ID="lbl_success_message" runat="server" Text="Label"></asp:Label>
+                                        <br>
                                         </br>
                                         Details:
                                         <asp:Label ID="lbl_success_detail" runat="server" Text="Label"></asp:Label>
@@ -75,6 +78,7 @@
                                     <div class='alert-danger alert'>
                                         Message:
                                         <asp:Label ID="lbl_fail_message" runat="server" Text="Label"></asp:Label>
+                                        <br>
                                         </br>
                                         Details:
                                         <asp:Label ID="lbl_fail_details" runat="server" Text="Label"></asp:Label>
