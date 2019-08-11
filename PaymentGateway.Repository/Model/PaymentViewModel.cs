@@ -17,6 +17,8 @@ namespace PaymentGateway.Repository.Model
         public string ExpiryMonth { get; set; }
         [Required]
         public string ExpiryYear { get; set; }
+        [Required]
+        public string CVC { get; set; }
     }
 
     public class PaymentViewModel
@@ -27,6 +29,7 @@ namespace PaymentGateway.Repository.Model
         public decimal Amount { get; set; }
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
+        public int CVC { get; set; }
     }
 
     public class PaymentResponseViewModel
@@ -56,6 +59,7 @@ namespace PaymentGateway.Repository.Model
     public class GatewayMerchantDetailsViewModel
     {
         public long CardNumber { get; set; }
+        public int CVC { get; set; }
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
         public decimal TotalAmount { get; set; }

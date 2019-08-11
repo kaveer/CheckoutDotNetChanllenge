@@ -56,7 +56,8 @@ namespace PaymentGateway.Repository.Repository
             if (tokenData == null)
                 return false;
 
-            if (DateTime.UtcNow > tokenData.DateCreated.AddMinutes(5))
+            //In usual case this should be less than 5 minuite
+            if (DateTime.UtcNow > tokenData.DateCreated.AddMinutes(20))
                 return false;
 
             if (!ValidateMerchandId(tokenData))

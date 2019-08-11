@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CardDetails">
           <Key>
             <PropertyRef Name="CardId" />
@@ -12,14 +12,14 @@
           <Property Name="CardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CardNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ExpiryMonth" Type="int" Nullable="false" />
+          <Property Name="CVC" Type="int" Nullable="false" />
           <Property Name="ExpiryYear" Type="int" Nullable="false" />
           <Property Name="TotalAmount" Type="decimal" Precision="9" Scale="2" />
         </EntityType>
         <EntityContainer Name="BankModelStoreContainer">
           <EntitySet Name="CardDetails" EntityType="Self.CardDetails" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BankModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -32,6 +32,7 @@
           <Property Name="ExpiryMonth" Type="Int32" Nullable="false" />
           <Property Name="ExpiryYear" Type="Int32" Nullable="false" />
           <Property Name="TotalAmount" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="CVC" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BankEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CardDetails" EntityType="Self.CardDetail" />
@@ -45,6 +46,7 @@
           <EntitySetMapping Name="CardDetails">
             <EntityTypeMapping TypeName="BankModel.CardDetail">
               <MappingFragment StoreEntitySet="CardDetails">
+                <ScalarProperty Name="CVC" ColumnName="CVC" />
                 <ScalarProperty Name="CardId" ColumnName="CardId" />
                 <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
                 <ScalarProperty Name="ExpiryMonth" ColumnName="ExpiryMonth" />

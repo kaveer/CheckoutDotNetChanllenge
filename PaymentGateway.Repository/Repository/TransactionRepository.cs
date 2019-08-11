@@ -142,7 +142,9 @@ namespace PaymentGateway.Repository.Repository
                     {
                         CardNumber = long.Parse(merchantData.CardNumber),
                         ExpiryMonth = merchantData.ExpiryMonth,
-                        ExpiryYear = merchantData.ExpiryYear
+                        ExpiryYear = merchantData.ExpiryYear,
+                        CVC = merchantData.CVC
+                        
                     };
                 }
             }
@@ -173,7 +175,8 @@ namespace PaymentGateway.Repository.Repository
                             Amount = Convert.ToDecimal(Decrypt(keys.PrivateKey, item.Amount)),
                             CardNumber = long.Parse(Decrypt(keys.PrivateKey, item.CardNumber)),
                             ExpiryMonth = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryMonth)),
-                            ExpiryYear = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryYear))
+                            ExpiryYear = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryYear)),
+                            CVC = Convert.ToInt32(Decrypt(keys.PrivateKey,item.CVC))
                         };
                     }
                 }
@@ -202,6 +205,28 @@ namespace PaymentGateway.Repository.Repository
             string decStr = Encoding.UTF8.GetString(dec);
 
             return decStr;
+        }
+
+        public TransactionLog Retrieve(string merchantId)
+        {
+            TransactionLog result = new TransactionLog();
+
+            if (string.IsNullOrWhiteSpace(merchantId))
+                return null;
+
+            using (PaymentGatewayEntities context = new PaymentGatewayEntities())
+            {
+                var transaction = context.TransactionLogs
+                                            .Where(x => x.MerchantId == merchantId)
+                                            .FirstOrDefault();
+
+                if (transaction == null)
+                    return null;
+
+                result = transaction;
+
+                return result;
+            }
         }
     }
 }

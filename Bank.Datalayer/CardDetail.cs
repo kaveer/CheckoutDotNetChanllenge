@@ -19,5 +19,6 @@ namespace Bank.Datalayer
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
+        public int CVC { get; set; }
     }
 }

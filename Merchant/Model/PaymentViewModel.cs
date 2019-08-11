@@ -13,6 +13,7 @@ namespace Merchant.Model
         public decimal Amount { get; set; }
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
+        public int CVC { get; set; }
     }
 
     

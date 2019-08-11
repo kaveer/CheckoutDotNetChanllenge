@@ -25,7 +25,8 @@ namespace Bank.Repository.Repository
                     CardNumber = item.CardNumber.ToString(),
                     ExpiryMonth = item.ExpiryMonth,
                     ExpiryYear = item.ExpiryYear,
-                    TotalAmount = item.Amount
+                    TotalAmount = item.Amount,
+                    CVC = item.CVC
                 });
 
                 context.SaveChanges();
@@ -38,7 +39,7 @@ namespace Bank.Repository.Repository
         {
             bool result = true;
 
-            if (item?.Amount == 0 || item?.CardNumber == 0 || item?.ExpiryMonth == 0 || item?.ExpiryYear == 0)
+            if (item?.Amount == 0 || item?.CardNumber == 0 || item?.ExpiryMonth == 0 || item?.ExpiryYear == 0 || item?.CVC == 0)
                 return false;
 
             if (item?.ExpiryMonth < DateTime.Now.Month)
@@ -128,7 +129,7 @@ namespace Bank.Repository.Repository
             if (!IsMerchantValid(item?.Merchant))
                 return false;
 
-            if (!IsCardExist(item.Payment.CardNumber))
+            if (!IsCardExist(item.Payment.CardNumber, item.Payment.CVC))
                 return false;
 
             return result;
@@ -147,20 +148,20 @@ namespace Bank.Repository.Repository
             if (merchant.ExpiryYear < DateTime.Now.Year)
                 return false;
 
-            if (!IsCardExist(merchant.CardNumber))
+            if (!IsCardExist(merchant.CardNumber, merchant.CVC))
                 return false;
 
             return result;
         }
 
-        private bool IsCardExist(long cardNumber)
+        private bool IsCardExist(long cardNumber, int CVC)
         {
             bool result = true;
 
             using (BankEntities context = new BankEntities())
             {
                 context.CardDetails
-                           .Where(x => long.Parse(x.CardNumber) == cardNumber)
+                           .Where(x => long.Parse(x.CardNumber) == cardNumber && x.CVC == CVC)
                            .FirstOrDefault();
 
             }

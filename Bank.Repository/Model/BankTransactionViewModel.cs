@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +21,18 @@ namespace Bank.Repository.Model
 
     public class GatewayPaymentViewModel
     {
+        [Required]
         public long CardNumber { get; set; }
         //for amount better use decimal accounding to my experience and link: http://net-informations.com/q/faq/float.html
         //for performance use doucle but if dealing with money use decimal link: https://exceptionnotfound.net/decimal-vs-double-and-other-tips-about-number-types-in-net/
+        [Required]
         public decimal Amount { get; set; }
+        [Required]
         public int ExpiryMonth { get; set; }
+        [Required]
         public int ExpiryYear { get; set; }
+        [Required]
+        public int CVC { get; set; }
     }
 
     public class GatewayTransactionDetailsViewModel
@@ -46,8 +53,13 @@ namespace Bank.Repository.Model
 
     public class GatewayMerchantDetailsViewModel
     {
+        [Required]
         public long CardNumber { get; set; }
+        [Required]
+        public int CVC { get; set; }
+        [Required]
         public int ExpiryMonth { get; set; }
+        [Required]
         public int ExpiryYear { get; set; }
         public decimal TotalAmount { get; set; }
 

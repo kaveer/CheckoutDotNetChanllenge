@@ -17,6 +17,7 @@ namespace PaymentGateway.Datalayer
         public int DetailsId { get; set; }
         public string MerchantId { get; set; }
         public string CardNumber { get; set; }
+        public int CVC { get; set; }
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }

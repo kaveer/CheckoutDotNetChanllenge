@@ -151,7 +151,8 @@ namespace Merchant
                             Amount = GetAmount(txt_amount.Text.Trim()),
                             CardNumber = Convert.ToInt32(txt_card_number.Text.Trim()),
                             ExpiryMonth = Convert.ToInt32(txt_expiry_month.Text.Trim()),
-                            ExpiryYear = Convert.ToInt32(txt_expiry_year.Text.Trim())
+                            ExpiryYear = Convert.ToInt32(txt_expiry_year.Text.Trim()),
+                            CVC = Convert.ToInt32(txt_cvc.Text.Trim())
                         };
 
                         Gateway transaction = new Gateway()
