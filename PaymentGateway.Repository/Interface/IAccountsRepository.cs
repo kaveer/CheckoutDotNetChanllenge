@@ -12,6 +12,6 @@ namespace PaymentGateway.Repository.Interface
         string GenerateToken(string merchantId);
         bool IsTokenValid(string token);
 
-        Token ExtractTokenData(string token)
+        Token ExtractTokenData(string token);
     }
 }
