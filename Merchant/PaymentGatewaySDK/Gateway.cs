@@ -95,7 +95,8 @@ namespace PaymentGatewaySDK
                         Amount = Encrypt(PublicKey, shopperDetails.Amount.ToString()),
                         CardNumber = Encrypt(PublicKey, shopperDetails.CardNumber.ToString()),
                         ExpiryMonth = Encrypt(PublicKey, shopperDetails.ExpiryMonth.ToString()),
-                        ExpiryYear = Encrypt(PublicKey, shopperDetails.ExpiryYear.ToString())
+                        ExpiryYear = Encrypt(PublicKey, shopperDetails.ExpiryYear.ToString()),
+                        CVC = Encrypt(PublicKey, shopperDetails.CVC.ToString())
                     };
 
                     string jsonObject = JsonConvert.SerializeObject(postModel, Formatting.None);
