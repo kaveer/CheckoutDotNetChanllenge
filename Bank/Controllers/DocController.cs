@@ -12,7 +12,7 @@ namespace Bank.Controllers
         // GET: api/Doc
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "bank", "value2" };
         }
 
         // GET: api/Doc/5
