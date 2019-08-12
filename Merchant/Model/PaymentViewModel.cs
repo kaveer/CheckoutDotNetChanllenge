@@ -7,7 +7,7 @@ namespace Merchant.Model
 {
     public class PaymentViewModel
     {
-        public int CardNumber { get; set; }
+        public long CardNumber { get; set; }
         //for amount better use decimal accounding to my experience and link: http://net-informations.com/q/faq/float.html
         //for performance use doucle but if dealing with money use decimal link: https://exceptionnotfound.net/decimal-vs-double-and-other-tips-about-number-types-in-net/
         public decimal Amount { get; set; }

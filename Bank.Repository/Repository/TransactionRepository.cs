@@ -61,7 +61,7 @@ namespace Bank.Repository.Repository
                 {
 
                     var debitAccount = context.CardDetails
-                                    .Where(x=> long.Parse(x.CardNumber) == item.Payment.CardNumber)
+                                    .Where(x => x.CardNumber == item.Payment.CardNumber.ToString().Trim())
                                     .FirstOrDefault();
 
                     if (debitAccount.TotalAmount < item.Payment.Amount)
@@ -71,10 +71,11 @@ namespace Bank.Repository.Repository
                     context.SaveChanges();
 
                     var merchant = context.CardDetails
-                                        .Where(x => long.Parse(x.CardNumber) == item.Merchant.CardNumber)
+                                        .Where(x => x.CardNumber == item.Merchant.CardNumber.ToString().Trim())
                                         .FirstOrDefault();
 
                     merchant.TotalAmount = merchant.TotalAmount + item.Payment.Amount;
+                    context.SaveChanges();
 
                     return result = new PaymentResponseViewModel()
                     {
@@ -88,7 +89,16 @@ namespace Bank.Repository.Repository
                             TransactionDate = DateTime.Now
                         },
                         Payment = item.Payment,
-                        Merchant = item.Merchant
+                        Merchant = new GatewayMerchantViewModel()
+                        {
+                            AmountCredited = item.Payment.Amount,
+                            CardNumber = item.Merchant.CardNumber,
+                            CVC = item.Merchant.CVC,
+                            DateCredited = DateTime.Now,
+                            ExpiryMonth = item.Merchant.ExpiryMonth,
+                            ExpiryYear = item.Merchant.ExpiryYear,
+                            TotalAmount = 0,
+                        }
                     };
                 }
             }
@@ -139,7 +149,7 @@ namespace Bank.Repository.Repository
         {
             bool result = true;
 
-            if (merchant.CardNumber == 0 || merchant.CardNumber == 0)
+            if (merchant.CardNumber == 0 || merchant.CVC == 0 || merchant.ExpiryMonth == 0 || merchant.ExpiryYear == 0)
                 return false;
 
             if (merchant.ExpiryMonth < DateTime.Now.Month)
@@ -160,9 +170,12 @@ namespace Bank.Repository.Repository
 
             using (BankEntities context = new BankEntities())
             {
-                context.CardDetails
-                           .Where(x => long.Parse(x.CardNumber) == cardNumber && x.CVC == CVC)
-                           .FirstOrDefault();
+                var data = context.CardDetails
+                               .Where(x => x.CardNumber == cardNumber.ToString().Trim() && x.CVC == CVC)
+                               .FirstOrDefault();
+
+                if (data == null)
+                    return false;
 
             }
 

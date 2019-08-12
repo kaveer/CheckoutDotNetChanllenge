@@ -35,13 +35,13 @@ namespace PaymentGatewaySDK
             {
                 string routePrefix = "api/auth";
                 string route = "token";
-                string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, "?merchantId=", MerchantId);
+                string endpoint = Path.Combine(baseAPIUrl, routePrefix, route, "?merchantId=" + MerchantId);
 
                 if (!string.IsNullOrWhiteSpace(MerchantId) || !string.IsNullOrWhiteSpace(endpoint))
                 {
 
                     var httpClient = new HttpClient();
-                    var response = httpClient.GetAsync(endpoint).Result;
+                    var response = httpClient.GetAsync(@"http://localhost:64591/api/auth/token?merchantId=" + MerchantId).Result;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                        
@@ -86,7 +86,7 @@ namespace PaymentGatewaySDK
             {
                 string routePrefix = "api/transaction";
                 string route = "sale";
-                string endpoint = Path.Combine(baseAPIUrl, routePrefix, route);
+                string endpoint = "http://localhost:64591/api/transactions/sales";
 
                 if (!string.IsNullOrWhiteSpace(endpoint))
                 {

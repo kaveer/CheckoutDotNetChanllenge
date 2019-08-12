@@ -69,14 +69,21 @@ namespace PaymentGateway.Repository.Repository
 
             string routePrefix = "api/bank";
             string route = "sales";
-            string endpoint = Path.Combine(baseAPIUrl, routePrefix, route);
+            string endpoint = @"http://localhost:64624/api/bank/sales";
 
             if (!string.IsNullOrWhiteSpace(endpoint))
             {
                 PaymentResponseViewModel jasonModel = new PaymentResponseViewModel()
                 {
                     TransactionId = "0",
-                    Details = new GatewayTransactionDetailsViewModel(),
+                    Details = new GatewayTransactionDetailsViewModel()
+                    {
+                        TransactionDate = DateTime.Now,
+                        Code = 5321,
+                        Details = "",
+                        IsSuccess = false,
+                        Message = ""
+                    },
                     Merchant = GetMerchantDetails(),
                     Payment = item
                 };
@@ -143,8 +150,12 @@ namespace PaymentGateway.Repository.Repository
                         CardNumber = long.Parse(merchantData.CardNumber),
                         ExpiryMonth = merchantData.ExpiryMonth,
                         ExpiryYear = merchantData.ExpiryYear,
-                        CVC = merchantData.CVC
-                        
+                        CVC = merchantData.CVC,
+                        AmountCredited = 1,
+                        DateCredited = DateTime.Now,
+                        MerchantId = 0,
+                        TotalAmount = 10000
+
                     };
                 }
             }
@@ -176,7 +187,7 @@ namespace PaymentGateway.Repository.Repository
                             CardNumber = long.Parse(Decrypt(keys.PrivateKey, item.CardNumber)),
                             ExpiryMonth = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryMonth)),
                             ExpiryYear = Convert.ToInt32(Decrypt(keys.PrivateKey, item.ExpiryYear)),
-                            CVC = Convert.ToInt32(Decrypt(keys.PrivateKey,item.CVC))
+                            CVC = Convert.ToInt32(Decrypt(keys.PrivateKey, item.CVC))
                         };
                     }
                 }

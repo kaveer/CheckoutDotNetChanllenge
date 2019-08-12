@@ -48,7 +48,7 @@ namespace Merchant.PaymentGatewaySDK
 
     public class GatewayMerchantDetailsViewModel
     {
-        public int CardNumber { get; set; }
+        public long CardNumber { get; set; }
         public int ExpiryMonth { get; set; }
         public int ExpiryYear { get; set; }
         public decimal TotalAmount { get; set; }
