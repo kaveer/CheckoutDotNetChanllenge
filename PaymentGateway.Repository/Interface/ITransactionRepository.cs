@@ -14,6 +14,6 @@ namespace PaymentGateway.Repository.Interface
 
         string MerchantId { get; set; }
 
-        TransactionLog Retrieve(string merchantId);
+        List<TransactionLog> Retrieve(string merchantId);
     }
 }

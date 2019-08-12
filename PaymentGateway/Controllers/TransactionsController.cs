@@ -3,6 +3,7 @@ using PaymentGateway.Repository.Helper;
 using PaymentGateway.Repository.Interface;
 using PaymentGateway.Repository.Model;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -61,11 +62,21 @@ namespace PaymentGateway.Controllers
         {
             try
             {
+                string token = Request.Headers?.Authorization?.ToString();
+                token = token.Replace("Bearer ", string.Empty);
+
                 if (string.IsNullOrWhiteSpace(merchantId))
                     return BadRequest();
 
-                TransactionLog result = _repository.Retrieve(merchantId);
-                if (result == null)
+                if (!_accountRepository.IsTokenValid(token))
+                {
+                    CommonAction.Log(Constants.ApplicationLogType.Transaction_Sales_Token_Invalid.ToString(), "Invalid or expired token");
+                    return BadRequest("Invalid token");
+                }
+                _repository.MerchantId = _accountRepository.ExtractTokenData(token).MerchantId;
+
+                List<TransactionLog> result = _repository.Retrieve(merchantId);
+                if (result.Count == 0)
                     return NotFound();
 
                 return Ok(result);

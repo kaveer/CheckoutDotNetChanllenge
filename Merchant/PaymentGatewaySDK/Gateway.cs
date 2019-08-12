@@ -79,6 +79,42 @@ namespace PaymentGatewaySDK
             }
         }
 
+        internal List<TransactionLog> RetrieveTransactionByMerchantId(string merchantId)
+        {
+            List<TransactionLog> result = new List<TransactionLog>();
+            try
+            {
+                string endpoint = "http://localhost:64591/api/transactions/retrieve?merchantId=" + merchantId;
+                if (!string.IsNullOrWhiteSpace(endpoint))
+                {
+                    var httpClient = new HttpClient();
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClientToken);
+
+                    var response = httpClient.GetAsync(endpoint).Result;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+
+                        var responseContent = response.Content.ReadAsStringAsync().Result;
+                        var responseObject = JsonConvert.DeserializeObject<List<TransactionLog>>(responseContent);
+
+                        if (responseObject != null)
+                            result = responseObject;
+                    }
+                    else
+                    {
+                        throw new Exception("Fail to retrieve token");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = new List<TransactionLog>();
+            }
+
+            return result;
+        }
+
         internal GatewayViewModel CreateSale(PaymentViewModel shopperDetails)
         {
             GatewayViewModel result = new GatewayViewModel();

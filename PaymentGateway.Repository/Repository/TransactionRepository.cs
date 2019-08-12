@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -53,7 +54,11 @@ namespace PaymentGateway.Repository.Repository
                     IsSuccess = result.Details.IsSuccess,
                     TransactionDate = DateTime.Now,
                     MerchantId = MerchantId,
-                    TransactionIdentifiyer = result.TransactionId
+                    TransactionIdentifiyer = Guid.NewGuid().ToString(),
+                    CardNumber = result.Payment.CardNumber.ToString(),
+                    CVC= result.Payment.CVC,
+                    ExpiryMonth = result.Payment.ExpiryMonth,
+                    ExpiryYear = result.Payment.ExpiryYear
                 };
 
                 contect.TransactionLogs.Add(transaction);
@@ -218,9 +223,12 @@ namespace PaymentGateway.Repository.Repository
             return decStr;
         }
 
-        public TransactionLog Retrieve(string merchantId)
+        public List<TransactionLog> Retrieve(string merchantId)
         {
-            TransactionLog result = new TransactionLog();
+            List<TransactionLog> result = new List<TransactionLog>();
+
+            if (merchantId != MerchantId)
+                return result;
 
             if (string.IsNullOrWhiteSpace(merchantId))
                 return null;
@@ -229,15 +237,49 @@ namespace PaymentGateway.Repository.Repository
             {
                 var transaction = context.TransactionLogs
                                             .Where(x => x.MerchantId == merchantId)
-                                            .FirstOrDefault();
+                                            .OrderByDescending(x=>x.TransactionDate)
+                                            .ToList();
 
                 if (transaction == null)
-                    return null;
+                    return result;
 
-                result = transaction;
+                foreach (var item in transaction)
+                {
+                    result.Add(new TransactionLog() {
+                        CardNumber = MaskDetails(item.CardNumber),
+                        AmountCredited = item.AmountCredited,
+                        BankResponse = item.BankResponse,
+                        CVC = item.CVC,
+                        ExpiryMonth = item.ExpiryMonth,
+                        ExpiryYear = item.ExpiryYear,
+                        IsSuccess = item.IsSuccess,
+                        TransactionDate = item.TransactionDate,
+                        TransactionIdentifiyer = item.TransactionIdentifiyer,
+                        MerchantId = item.MerchantId
+                    });
+                }
 
                 return result;
             }
+        }
+
+        private string MaskDetails(string cardNumber)
+        {
+            int unmaskedChar = 3;
+            string result = string.Empty;
+            char[] ch = cardNumber.ToCharArray();
+            int length = ch.Length - unmaskedChar;
+            int count = 2;
+
+            while (count != length)
+            {
+                ch[count] = 'X';
+                count++;
+            }
+
+
+            result = new string(ch);
+            return result;
         }
     }
 }

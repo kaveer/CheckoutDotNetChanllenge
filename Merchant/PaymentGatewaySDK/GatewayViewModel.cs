@@ -55,5 +55,20 @@ namespace Merchant.PaymentGatewaySDK
 
     }
 
+    public class TransactionLog
+    {
+        public int TransactionId { get; set; }
+        public string TransactionIdentifiyer { get; set; }
+        public string MerchantId { get; set; }
+        public Nullable<bool> IsSuccess { get; set; }
+        public Nullable<decimal> AmountCredited { get; set; }
+        public string BankResponse { get; set; }
+        public Nullable<System.DateTime> TransactionDate { get; set; }
+        public int CVC { get; set; }
+        public string CardNumber { get; set; }
+        public int ExpiryMonth { get; set; }
+        public int ExpiryYear { get; set; }
+    }
+
 
 }
