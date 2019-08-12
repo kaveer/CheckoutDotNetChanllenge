@@ -1,12 +1,12 @@
 # CheckoutDotNetChanllenge
 
-#Description
+# Description
 
-#Architecture
+# Architecture
 
-#Installation
+# Installation
 
-#Future Development
+# Future Development
 
 
 
