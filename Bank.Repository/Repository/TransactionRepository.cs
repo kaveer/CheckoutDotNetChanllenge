@@ -139,7 +139,7 @@ namespace Bank.Repository.Repository
             if (!IsMerchantValid(item?.Merchant))
                 return false;
 
-            if (!IsCardExist(item.Payment.CardNumber, item.Payment.CVC))
+            if (!IsCardExist(item.Payment.CardNumber, item.Payment.CVC, item.Payment.ExpiryMonth, item.Payment.ExpiryYear))
                 return false;
 
             return result;
@@ -158,20 +158,23 @@ namespace Bank.Repository.Repository
             if (merchant.ExpiryYear < DateTime.Now.Year)
                 return false;
 
-            if (!IsCardExist(merchant.CardNumber, merchant.CVC))
+            if (!IsCardExist(merchant.CardNumber, merchant.CVC, merchant.ExpiryMonth, merchant.ExpiryYear))
                 return false;
 
             return result;
         }
 
-        private bool IsCardExist(long cardNumber, int CVC)
+        private bool IsCardExist(long cardNumber, int CVC, int expiryMonth, int expiryYear)
         {
             bool result = true;
 
             using (BankEntities context = new BankEntities())
             {
                 var data = context.CardDetails
-                               .Where(x => x.CardNumber == cardNumber.ToString().Trim() && x.CVC == CVC)
+                               .Where(x => x.CardNumber == cardNumber.ToString().Trim() 
+                                        && x.CVC == CVC
+                                        && x.ExpiryMonth == expiryMonth
+                                        && x.ExpiryYear == expiryYear)
                                .FirstOrDefault();
 
                 if (data == null)

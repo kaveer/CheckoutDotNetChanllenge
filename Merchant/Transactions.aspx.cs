@@ -103,10 +103,6 @@ namespace Merchant
                     grd_previous.DataSource = previousTransaction;
                     grd_previous.DataBind();
                 }
-                else
-                {
-
-                }
             }
             catch (Exception ex)
             {
