@@ -1,4 +1,4 @@
-# Project Title: CheckoutDotNetChanllenge
+# Project Title: CheckoutDotNetChallenge
 
 # Description
 Challenge consist of show case the developer skills in regards to microsoft technologies such as C#, asp.net web API, SQL server. The main challenge consists of developing and simulate a payment gateway transaction between a shopper and the acquiring bank. 
