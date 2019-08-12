@@ -1,11 +1,51 @@
-# CheckoutDotNetChanllenge
+# Project Title: CheckoutDotNetChanllenge
 
 # Description
+Challenge consist of show case the developer skills in regards to microsoft technologies such as C#, asp.net web API, SQL server. The main challenge consists of developing and simulate a payment gateway transaction between a shopper and the acquiring bank. 
 
 # Architecture
-
+- Acquiring bank
+  - Bank (API)
+  - Bank.Datalayer
+  - Bank.Repository
+- Payment gateway
+  - PaymentGateway (API)
+  - PaymentGateway.Datalayer
+  - PaymentGateway.Repository
+- Merchant
+  - Merchant (Client side)
+  
 # Installation
+```
+Install-Package EntityFramework -Version 6.2.0
+```
+Install EF using the code snippet above on the following projects:
+- Bank
+- Bank.Datalayer
+- Bank.Repository
+- PaymentGateway
+- PaymentGateway.Datalayer
+- PaymentGateway.Repository
 
+```
+Install-Package Unity.AspNet.WebApi -Version 5.11.1
+```
+Instal Unity for dependency injection using the code snippet above on the following projects:
+- Bank
+- PaymentGateway
+
+```
+Install-Package Portable.BouncyCastle -Version 1.8.1.3
+```
+Install  Bouncy Castle for engryption using the code snippet above in the following projects: 
+- Merchant
+- Payment Gateway
+
+# Database and ConnectionString
+
+
+# configuration
+- 
 # Future Development
 
 
