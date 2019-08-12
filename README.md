@@ -1,17 +1,13 @@
 # CheckoutDotNetChanllenge
-Develop a payment gateway 
 
-## CheckoutDotNetChanllenge
-Develop a payment gateway 
+#Description
 
-### CheckoutDotNetChanllenge
-Develop a payment gateway 
+#Architecture
 
-#### CheckoutDotNetChanllenge
-Develop a payment gateway 
+#Installation
 
-##### CheckoutDotNetChanllenge
-Develop a payment gateway 
+#Future Development
+
 
 
 Project name: Your project’s name is the first thing people will see upon scrolling down to your README, and is included upon creation of your README file.
