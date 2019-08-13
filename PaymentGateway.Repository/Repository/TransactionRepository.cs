@@ -265,20 +265,25 @@ namespace PaymentGateway.Repository.Repository
 
         private string MaskDetails(string cardNumber)
         {
-            int unmaskedChar = 3;
             string result = string.Empty;
-            char[] ch = cardNumber.ToCharArray();
-            int length = ch.Length - unmaskedChar;
-            int count = 2;
 
-            while (count != length)
+            if (cardNumber.Length > 6)
             {
-                ch[count] = 'X';
-                count++;
+                int unmaskedChar = 3;
+                char[] ch = cardNumber.ToCharArray();
+                int length = ch.Length - unmaskedChar;
+                int count = 2;
+
+                while (count != length)
+                {
+                    ch[count] = 'X';
+                    count++;
+                }
+
+
+                result = new string(ch);
             }
-
-
-            result = new string(ch);
+            
             return result;
         }
     }

@@ -98,20 +98,20 @@ namespace Merchant
 
             //check for month and year
             //validation for range, comapre with current date and format
-            if (txt_expiry_month.Text.Trim().Length != 2 || !txt_expiry_month.Text.All(char.IsDigit))
-                throw new Exception("Invalid month format");
-            else
-            {
-                if (Convert.ToInt32(txt_expiry_month.Text.Trim()) < month)
-                    throw new Exception("Invalid expiry month");
-            }
-
             if (txt_expiry_year.Text.Trim().Length != 4 || !txt_expiry_year.Text.All(char.IsDigit))
                 throw new Exception("Invalid year format");
             else
             {
-                if (Convert.ToInt32(txt_expiry_month.Text.Trim()) < month)
+                if (Convert.ToInt32(txt_expiry_year.Text.Trim()) < year)
                     throw new Exception("Invalid expiry year");
+            }
+
+            if (txt_expiry_month.Text.Trim().Length != 2 || !txt_expiry_month.Text.All(char.IsDigit))
+                throw new Exception("Invalid month format");
+            else
+            {
+                if (Convert.ToInt32(txt_expiry_month.Text.Trim()) < month && Convert.ToInt32(txt_expiry_year.Text.Trim()) <= year)
+                    throw new Exception("Invalid expiry month");
             }
 
             if (txt_cvc.Text.Trim().Length != 3 || !txt_cvc.Text.All(char.IsDigit))
@@ -171,7 +171,7 @@ namespace Merchant
                         var result = transaction.CreateSale(shopperDetails);
 
                         if (!result.Details.IsSuccess)
-                            throw new Exception(result.Details.MessageDetails);
+                            throw new Exception(result.Details.Message);
 
                         pnl_fail.Visible = false;
                         pnl_sucess.Visible = true;

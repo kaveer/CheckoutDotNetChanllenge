@@ -42,7 +42,7 @@ namespace Bank.Repository.Repository
             if (item?.Amount == 0 || item?.CardNumber == 0 || item?.ExpiryMonth == 0 || item?.ExpiryYear == 0 || item?.CVC == 0)
                 return false;
 
-            if (item?.ExpiryMonth < DateTime.Now.Month)
+            if (item?.ExpiryMonth < DateTime.Now.Month && item?.ExpiryYear <= DateTime.Now.Year)
                 return false;
 
             if (item?.ExpiryYear < DateTime.Now.Year)
@@ -126,7 +126,7 @@ namespace Bank.Repository.Repository
                 }
             };
 
-            throw new NotImplementedException();
+            return result;
         }
 
         private bool IsModelValid(PaymentResponseViewModel item)
