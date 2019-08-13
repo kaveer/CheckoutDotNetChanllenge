@@ -1,7 +1,7 @@
 # Project Title: CheckoutDotNetChallenge
 
 # Description
-Challenge consist of show case the developer skills in regards to microsoft technologies such as C#, asp.net web API, SQL server. The main challenge consists of developing and simulate a payment gateway transaction between a shopper and the acquiring bank. 
+Challenge consists of showcasing the developer skills in regards to Microsoft technologies such as C#, asp.net web API, SQL server. The main challenge consists of developing and simulate a payment gateway transaction between a shopper and the acquiring bank. 
 
 # Architecture
 - Acquiring bank
@@ -30,14 +30,14 @@ Install EF using the code snippet above on the following projects:
 ```
 Install-Package Unity.AspNet.WebApi -Version 5.11.1
 ```
-Instal Unity for dependency injection using the code snippet above on the following projects:
+Install Unity for dependency injection using the code snippet above on the following projects:
 - Bank
 - PaymentGateway
 
 ```
 Install-Package Portable.BouncyCastle -Version 1.8.1.3
 ```
-Install  Bouncy Castle for engryption using the code snippet above in the following projects: 
+Install Bouncy Castle for encryption using the code snippet above in the following projects: 
 - Merchant
 - Payment Gateway
 
@@ -62,9 +62,9 @@ Install  Bouncy Castle for engryption using the code snippet above in the follow
 2. Click on `PAY` button
 
 ## Merchant (Client Side)
-1. Check if configuration is properly initialize
-2. Check if null values which are expected to be input by the user
-3. check if the formate input by the user is valid
+1. Check whether configuration is properly initialized
+2. Check for none null value
+3. Check whether the format input by the user is valid
 4. User merchantId to request token from `Payment Gateway` to use as JWT
 5. JWT contains merchantId, Valid from/to date, Expiration date
 6. Encrypt shopper `card number, CVC, expiration month/ date and amount` using merchant `public key`
@@ -72,25 +72,25 @@ Install  Bouncy Castle for engryption using the code snippet above in the follow
 8. Log transaction
 
 ## Payment Gateway
-1. Check if there is a token in the incoming request and check if it is valid
+1. Check whether there is a token in the incoming request and check if it is valid
 2. Extract merchant id from token
 3. Decrypt shopper data using merchant `private key` 
-4. check if data is valid
+4. check whether data is valid
 5. Get merchant details such as card number, cvc, expiry month/ year from database
 6. generate JSON model and make API call to `bank` API using `HttpClient`
 7. Log transaction
 
 ## Bank
-1. check if incoming request body is valid such as card number, amount, cvc...
-2. check if expiry month is less than `DateTime.Now.Month`
-3. Check if expiry year is less than `DateTime.Now.Year`
-4. Check if merchant data is valid
-5. Check if card details exit in bank database by matching:
+1. check whether incoming request body is valid such as card number, amount, cvc...
+2. check whether expiry month is less than `DateTime.Now.Month`
+3. Check whether expiry year is less than `DateTime.Now.Year`
+4. Check whether merchant data is valid
+5. Check whether card details exist in bank database by matching:
   - Card number
   - CVC
   - Expiry month/ year
-6. retrieve shopper card details (Debit account)
-7. Check if payment amount is less than shopper balance
+6. Retrieve shopper card details (Debit account)
+7. Check whether payment amount is less than shopper balance
 8. Remove payment sum from shopper balance
 9. Retrieve merchant balance (Credited account)
 10. Add payment amount to merchant balance
@@ -110,8 +110,8 @@ Install  Bouncy Castle for engryption using the code snippet above in the follow
 
 ### Payment Gateway
 1. check for JWT in incoming request's authorization header
-2. extract merchant if from JWT
-3. check if token is valid
+2. extract merchant id from JWT
+3. check whether token is valid
 4. Query database table based on merchant id using Linq statement,
 5. Mask card number 
 6. Return data to merchant (Client side)
@@ -205,7 +205,7 @@ FROM [Bank].[dbo].[CardDetails]
 |300|378282246310005|250|12|2030|
 |100|36259600000004|300|12|2030|
 
-> Reponse: Transaction Successfull
+> Reponse: Transaction Successful
 
 
 
@@ -252,14 +252,15 @@ FROM [Bank].[dbo].[CardDetails]
 > Response: Invalid model for transaction 
 
 # Future Development
-- This project could have some improvement in the future such as using Azure function or logic apps to simulate the Bank if there was no time constraint and personal commitments. 
+Without time constraint and personal commitments this project could have better improvements such as: 
+- Using Azure function or logic apps to simulate the Bank
 - Proper application logging using: serilog
-- Develop the client side using single page application technologies such as Angular js or vue js
+- Develop the client side using single page application technologies such as Angular JS or vue JS
 - Use Asp.net Web API core
 - Email notification for success and fail transaction
-- Auto generate transaction log for merchante.
+- Auto generate transaction log for merchant.
 - Better encryption mechanism
 - Encryption of data between payment gateway and bank
 - Use CIDI
 - Use swagger or wikis for better documentation
-- better performance testing tool rather than using Visual Studio Diagnostic tools
+- Better performance testing tool rather than using Visual Studio Diagnostic tools
