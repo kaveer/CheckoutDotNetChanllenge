@@ -178,7 +178,79 @@ Install  Bouncy Castle for engryption using the code snippet above in the follow
 - Retrieve transactions
   - Endpoint: http://localhost:64591/api/transactions/retrieve
   - Http verb: GET
-  
+# Testing
+## All valid card
+|Card number |Expiry Month| CVC| Expiry Year| Total Amount|User Type
+|---|---|---|---|---|---|
+|4111111111111111| 12| 200| 2030| 11080.00| Merchant|
+|378282246310005| 12| 350| 2030| 9000.00| Shopper|
+|36259600000004| 12| 300| 2030| 9900.00| Shopper|
+|3530111333300000| 12| 100| 2030| 10000.00| Shopper|
+|5555555555554444| 12| 300| 2030| 10000.00| Shopper|
+|4005519200000004| 12| 500| 2030| 10000.00| Shopper|
+|4012000033330026| 12| 560| 2030| 10000.00| Shopper|
+|4012888888881881| 12| 660| 2030| 10000.00| Shopper|
+|4217651111111119| 12|120| 2030| 10000.00| Shopper|
+
+### Check transaction: 
+```
+USE [Bank]
+SELECT *
+FROM [Bank].[dbo].[CardDetails]
+```
+
+## Valid Card
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|300|378282246310005|250|12|2030|
+|100|36259600000004|300|12|2030|
+
+> Reponse: Transaction Successfull
+
+
+
+## Invalid card: amount
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|10900|378282246310005|250|12|2030|
+
+> Response: Insufficient amount
+
+## Invalid card: card number
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|10|12345|250|12|2030|
+
+> Response: nvalid model for transaction 
+
+## Invalid card: CVC
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|300|378282246310005|100|12|2030|
+
+> Response: Invalid model for transaction 
+
+## Invalid card: Expiry month
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|300|378282246310005|250|05|2019|
+
+> Response: Invalid expiry month 
+
+## Invalid card: Expiry year
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|300|378282246310005|250|12|2015|
+
+> Response: Invalid expiry year
+
+## Invalid card: Expiry month/year not match card details
+|Amount|Card number|CVC|Expiry month|Expiry year|
+|---|---|---|---|---|
+|300|378282246310005|250|12|2020|
+
+> Response: Invalid model for transaction 
+
 # Future Development
 - This project could have some improvement in the future such as using Azure function or logic apps to simulate the Bank if there was no time constraint and personal commitments. 
 - Proper application logging using: serilog
@@ -188,3 +260,6 @@ Install  Bouncy Castle for engryption using the code snippet above in the follow
 - Auto generate transaction log for merchante.
 - Better encryption mechanism
 - Encryption of data between payment gateway and bank
+- Use CIDI
+- Use swagger or wikis for better documentation
+- better performance testing tool rather than using Visual Studio Diagnostic tools
